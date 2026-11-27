@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Prediction | Django</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5fb;
+            color: #24344d;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #123b70, #2879bd);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px #173b7020;
+        }
+
+        .hero h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            line-height: 1.7;
+            color: #e4efff;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px #1e3a5f12;
+        }
+
+        .card h2 {
+            color: #174d83;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #718096;
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 17px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #40536d;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7e1ee;
+            border-radius: 9px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .field input:focus {
+            border-color: #2879bd;
+            box-shadow: 0 0 0 3px #2879bd18;
+        }
+
+        .button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #1769aa;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #104c80;
+        }
+
+        .result {
+            padding: 22px;
+            background: #eaf4ff;
+            border-left: 5px solid #2879bd;
+            border-radius: 10px;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+
+        .error {
+            color: #b42318;
+            background: #fff0ee;
+            padding: 14px;
+            border-radius: 9px;
+            margin-top: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #8492a6;
+            font-size: 12px;
+            line-height: 1.7;
+            padding: 20px;
+        }
+
+        @media (max-width: 650px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 27px;
+            }
+
+            .hero h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <section class="hero">
+        <h1>Breast Cancer Prediction</h1>
+        <p>
+            Aplikasi klasifikasi data kanker payudara
+            menggunakan algoritma Machine Learning
+            Random Forest berbasis Django.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Formulir Prediksi</h2>
+        <p class="description">
+            Masukkan 30 nilai fitur berdasarkan data yang
+            ingin diuji. Nilai awal menggunakan median dataset.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-grid">
+                {% for item in data_input %}
+                <div class="field">
+                    <label>{{ item.name }}</label>
+                    <input
+                        type="number"
+                        step="any"
+                        name="{{ item.name }}"
+                        value="{{ item.value }}"
+                        required>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="button">
+                Prediksi Diagnosis
+            </button>
+        </form>
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if hasil %}
+        <div class="result">
+            <h2>Hasil Klasifikasi</h2>
+            <p><strong>Kategori:</strong> {{ hasil }}</p>
+            <p><strong>Probabilitas kelas:</strong> {{ probabilitas }}%</p>
+            <p>
+                Hasil ini merupakan keluaran model untuk
+                keperluan pembelajaran, bukan diagnosis medis.
+            </p>
+        </div>
+        {% endif %}
+    </section>
+
+    <div class="footer">
+        <p>Proyek UAS Sistem Cerdas | Algoritma Random Forest</p>
+        <p>Implementasi menggunakan Python dan Django</p>
+        <p>Hanya untuk demonstrasi akademik, bukan alat diagnosis medis.</p>
+    </div>
+
+</div>
+</body>
+</html>
